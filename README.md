@@ -15,7 +15,7 @@ bun run dev
 
 # how to use 
 
-Run localhost:5173 on the url of your browser. 
+Run localhost:5173 on the url input ( search input ) of your browser. 
 You have two section, messaging and file sharing. 
 
 For messaging you need to know the peer id of the peer 2. You are the peer 1.
