@@ -1,7 +1,17 @@
-// zus.ts
 import { create } from 'zustand';
+import { persist } from 'zustand/middleware';
 
-export const useStore = create((set) => ({
-  peerId: null,
-  setPeerId: (id) => set({ peerId: id }), // Correctly updates peerId
-}));
+export const useStore = create(
+  persist(
+    (set) => ({
+      peerId: '',
+      setPeerId: (peerId: string) => set({ peerId }),
+      rtco: null,
+      setRtco: (rtco: any) => set({ rtco }),
+    }),
+    {
+      name: 'messaging', 
+      storage: sessionStorage, 
+    }
+  )
+);

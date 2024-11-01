@@ -13,13 +13,8 @@ const App = (props: {}) => {
     <>
     <div className="main">
       <Navbar /> {/* Navbar is always rendered */}
-      <Switch>
-        <Route path="/file" component={File} />
-        <Route path="/chat" component={() => <Chat/>} />
-        <Route>
-         <Home/>
-        </Route>
-      </Switch>
+      <Chat/>
+      <File/>
     </div>
 
       <Footer/>

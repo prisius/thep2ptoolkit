@@ -55,6 +55,8 @@ function pasta() {
 
   return (
     <div>
+    <br/>
+    <h1>File Transfer</h1>
     <div className="warning">
 
 <p>Avant de commencer à télécharger ou à partager du contenu via des réseaux P2P (peer-to-peer), nous tenons à vous rappeler que l'utilisation de ces technologies peut comporter des risques.</p>

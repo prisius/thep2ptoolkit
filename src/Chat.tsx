@@ -1,38 +1,46 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Artico } from '@rtco/client';
-import { useStore } from "./zus.ts";
+import  {useStore}  from "./zus.ts";
 
 function Chat() {
   const [remoteID, setRemoteID] = useState('');
   const [connected, setConnected] = useState(false);
   const [messages, setMessages] = useState([]);
   const [inputMessage, setInputMessage] = useState('');
-  
-  // Zustand store for peerId
+  const [id, setId] = useState(""); 
   const peerId = useStore(state => state.peerId);
-  const setPeerId = useStore(state => state.setPeerId);
+const setPeerId = useStore((state) => state.setPeerId); // Assurez-vous que l'import est correct
+const rtco = useStore(state => state.rtco);
+const setRtco = useStore(state => state.setRtco)
   
-  const rtcoRef = useRef(null);
+  const rtcoRef = useRef(null); 
   const callRef = useRef(null);
 
-  useEffect(() => {
+
+
+
+useEffect(() => {
+  if (!rtcoRef.current) {
     const rtco = new Artico();
     rtcoRef.current = rtco;
+    setRtco(rtco); // Enregistre l'instance dans le store zustand
 
     rtco.on('open', (id) => {
-      console.log('Connected with peer ID:', id);
-      setPeerId(id); // Set peerId in Zustand store when Artico connection is open
+      if (!peerId) {
+        setPeerId(id);
+      }
     });
 
+    // Événements pour l'appel
     rtco.on('call', (call) => {
       call.answer();
       call.on('open', () => setConnected(true));
       call.on('data', (data) => setMessages((prev) => [...prev, `Peer 1: ${data}`]));
       callRef.current = call;
     });
-  }, [setPeerId]); // Ensure setPeerId is in dependency array
+  }
+}, [setPeerId, setRtco, peerId]);
 
-  // Connect to remote peer
   const connectToPeer = () => {
     const rtco = rtcoRef.current;
     const call = rtco.call(remoteID, { username: 'Peer1' });
@@ -54,7 +62,6 @@ function Chat() {
     <div>
       <h2>WebRTC Chat</h2>
 
-      {/* Display peerId with fallback text */}
       <p>Your Peer ID: <strong>{peerId || "Connecting..."}</strong></p>
 
       {!connected && (
